@@ -27,6 +27,7 @@ CREATE TABLE `Person` (
   `Person_ID` varchar(100) NOT NULL,
   `Person_Name` varchar(100) NOT NULL,
   `IsCreator` binary(100) NOT NULL,
+  `Auth_Token` varchar(100) NOT NULL,
   PRIMARY KEY (`Person_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -75,7 +76,9 @@ DROP TABLE IF EXISTS `Time_Options`;
 CREATE TABLE `Time_Options` (
   `Time_ID` varchar(100) NOT NULL,
   `Poll_ID` varchar(100) NOT NULL,
-  PRIMARY KEY (`Time_ID`)
+  `Start` DATETIME NOT NULL,
+  `End` DATETIME NOT NULL,
+  PRIMARY KEY (`Time_ID`, `Poll_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
