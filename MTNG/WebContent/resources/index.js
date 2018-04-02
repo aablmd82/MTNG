@@ -255,6 +255,8 @@ function createPoll(survey) {
 	});
 };
 
+
+
 $("#surveyContainer").Survey({
 	model : survey,
 	onValidateQuestion : surveyValidateQuestion,

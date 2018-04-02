@@ -24,10 +24,10 @@ DROP TABLE IF EXISTS `Person`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Person` (
-  `Person_ID` varchar(100) NOT NULL,
+  `Person_ID` INT NOT NULL AUTO_INCREMENT,
   `Person_Name` varchar(100) NOT NULL,
-  `IsCreator` binary(100) NOT NULL,
-  `Auth_Token` varchar(100) NOT NULL,
+  `IsCreator` char(1) DEFAULT 'N',
+  `Auth_Token` varchar(100) NOT NULL ,
   PRIMARY KEY (`Person_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -50,7 +50,7 @@ DROP TABLE IF EXISTS `Poll`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Poll` (
   `Poll_ID` INT NOT NULL AUTO_INCREMENT,
-  `Person_ID` varchar(100) DEFAULT NULL,
+  `Person_ID` INT DEFAULT NULL,
   `Name` varchar(100) DEFAULT NULL,
   `Location` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`Poll_ID`)
@@ -74,7 +74,7 @@ DROP TABLE IF EXISTS `Time_Options`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Time_Options` (
-  `Time_ID` varchar(100) NOT NULL,
+  `Time_ID` INT NOT NULL AUTO_INCREMENT,
   `Poll_ID` varchar(100) NOT NULL,
   `Start` DATETIME NOT NULL,
   `End` DATETIME NOT NULL,
@@ -99,8 +99,8 @@ DROP TABLE IF EXISTS `Vote`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Vote` (
-  `Person_ID` varchar(100) NOT NULL,
-  `Time_ID` varchar(100) NOT NULL,
+  `Person_ID` INT NOT NULL,
+  `Time_ID` INT NOT NULL,
   PRIMARY KEY (`Person_ID`,`Time_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
