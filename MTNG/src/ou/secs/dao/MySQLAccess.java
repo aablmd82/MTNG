@@ -137,4 +137,30 @@ public class MySQLAccess {
 	public static void updateDB(Poll poll) {
 
 	}
+	
+	public static void readDB(Poll poll) {
+		Connection c = null;
+		Statement s;
+		PreparedStatement p = null;
+		try {
+			c = getConnection();
+			s = c.createStatement();
+			s.execute("USE mtng;");
+			p = c.prepareStatement("SELECT Start, End FROM Time_Options WHERE"
+					+ " (Time_ID, Poll_ID) VALUE (?, ?);");
+			p.setInt(1, poll.getTime_ID());
+			p.setInt(2, poll.getPoll_ID());
+			p.execute();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		} finally {
+			try {
+				if (p != null)
+					p.close();
+				if (c != null)
+					c.close();
+			} catch (SQLException e2) {
+			}
+		}
+	}
 }
