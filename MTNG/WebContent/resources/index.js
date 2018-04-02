@@ -1,3 +1,10 @@
+/*Read poll data if editing a poll*/
+try {
+	var data = JSON.parse($('#data').val());
+}
+catch(SyntaxError) {}
+
+/*Checking that the start times are all before the end times*/
 function surveyValidateQuestion(s, options) {
 	if (options.name == "times") {
 		for (i in options.value) {
@@ -13,8 +20,8 @@ function surveyValidateQuestion(s, options) {
 	}
 }
 
+/*Define the survey*/
 Survey.Survey.cssType = "bootstrap";
-
 var surveyJSON = {
 	"pages" : [ {
 		"name" : "page1",
@@ -232,7 +239,18 @@ var surveyJSON = {
 	} ]
 }
 
-var survey = new Survey.Model(surveyJSON);
+/*Initialize survey, with previous data loaded if editing the poll*/ 
+if (data) {
+	surveyJSON.pages[0].questions[0].visible = false;
+	surveyJSON.pages[0].questions[1].visible = false;
+	var survey = new Survey.Model(surveyJSON);
+	survey.data = data;
+	survey.currentPageNo = 1;
+}
+else
+	var survey = new Survey.Model(surveyJSON);
+survey.showQuestionNumbers = 'off';
+survey.requiredText = '';
 
 function createPoll(survey) {
 	alert('Inside createPoll js function');
