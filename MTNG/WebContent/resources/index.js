@@ -37,12 +37,9 @@ var surveyJSON = {
 			isRequired : true
 		}, {
 			type : "text",
-			name : "email",
-			title : "Please type your e-mail",
+			name : "personName",
+			title : "Please enter your name",
 			isRequired : true,
-			validators : [ {
-				type : "email"
-			} ]
 		} ]
 	}, {
 		"name" : "page2",
@@ -235,12 +232,12 @@ var surveyJSON = {
 				"cellType" : "dropdown",
 				"isRequired" : true,
 				"choices" : [ "0", "15", "30", "45" ]
-			} ]
+			}, ]
 		} ]
 	} ]
 }
 
-/*Initialize survey, with previous data loaded if editing the poll*/ 
+/*Initialize survey, with previous data loaded if editing the poll*/
 if (data) {
 	surveyJSON.pages[0].questions[2].visible = false;
 	var survey = new Survey.Model(surveyJSON);
@@ -265,7 +262,7 @@ function createPoll(survey) {
 		// Without it, "unsupported media type" error appears
 		contentType : 'application/json',
 		success : function(data) {
-			alert(data);
+			location.href='http://localhost:8080/MTNG/goToPoll';
 		},
 		error : function(data, status, er) {
 			alert("error: " + data + " status: " + status + " er:" + er);
