@@ -10,10 +10,14 @@ for (i in data.pollTimeList) {
     choices1.push(formatDates(dt));
 }
 
-/*Format the options into a nice string*/
+/*Returns an object representing each time option, with the Time_ID included*/
 function formatDates(times) {
-	return (new Date(times.startdate + " " + times.starthours + ":" + times.startminutes).toLocaleString('en-US', dateOptions).replace(/,/g, '') + "   -   " +
-			new Date(times.enddate + " " + times.endhours + ":" + times.endminutes).toLocaleString('en-US', dateOptions).replace(/,/g, ''))
+	var obj = {
+			"value": times.Time_ID,
+			"text": (new Date(times.startdate + " " + times.starthours + ":" + times.startminutes).toLocaleString('en-US', dateOptions).replace(/,/g, '') + "   -   " +
+					new Date(times.enddate + " " + times.endhours + ":" + times.endminutes).toLocaleString('en-US', dateOptions).replace(/,/g, ''))
+	};
+	return obj;
 }
 
 /*Define the survey*/ 
@@ -21,7 +25,12 @@ Survey.Survey.cssType = "bootstrap";
 var json = {
     requiredText: "",
     questions: [
-        {
+    	{
+    		type: "text",
+    		name: "personName",
+    		title: "Please enter your name",
+    		isRequired: true
+    	}, {
             type: "checkbox",
             name: "pollTimeList",
             title: "Select available times:",
@@ -33,7 +42,7 @@ var json = {
 };
 
 /*Add the time options*/
-json.questions[0].choices = choices1;
+json.questions[1].choices = choices1;
 
 /*Instantiate the survey*/
 window.survey = new Survey.Model(json);
