@@ -33,21 +33,9 @@ public class Poll implements Serializable {
 	public String getEmail() {
 		return email;
 	}
-
+	
 	public void setEmail(String email) {
 		this.email = email;
-	}
-	public int getPoll_ID() {
-		return Poll_ID;
-	}
-	public void setPoll_ID(int Time_ID) {
-		this.Time_ID = Time_ID;
-	}
-	public int getTime_ID() {
-		return Time_ID;
-	}
-	public void setTime_ID(int Time_ID) {
-		this.Time_ID = Time_ID;
 	}
 
 	public int getPoll_ID() {

@@ -53,7 +53,7 @@ public class AdminController {
 		testTimeOption1.setEnddate("02/03/2018");
 		testTimeOption1.setEndhours("5");
 		testTimeOption1.setEndminutes("33");
-		testTimeOption1.setStartdate("02/03/2018");
+		testTimeOption1.setStartdate("02/03/20 18");
 		testTimeOption1.setStarthours("2");
 		testTimeOption1.setStartminutes("00");
 
