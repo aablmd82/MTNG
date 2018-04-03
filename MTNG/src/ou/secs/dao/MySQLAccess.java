@@ -110,7 +110,44 @@ public class MySQLAccess {
 	// Pass DB keys (like Time_ID, Poll_ID) and use IDs in WHERE clause to update
 	// Add IDs to json in jsp and Java objects
 	public static void updateDB(Poll poll) {
-
+		Connection c = null;
+		Statement s;
+		PreparedStatement p = null;
+		try {
+			c = getConnection();
+			s = c.createStatement();
+			s.execute("USE mtng;");
+			
+			p = c.prepareStatement("DELETE FROM Time_Options WHERE Poll_ID = ?;");
+			p.setInt(1, poll.getPoll_ID());
+			p.executeUpdate();
+			
+			p = c.prepareStatement("UPDATE Poll SET name = ?, location = ?, email = ? WHERE Poll_ID = ?;");
+			p.setString(1, poll.getName());
+			p.setString(2, poll.getLocation());
+			p.setString(3, poll.getEmail());
+			p.setInt(4, poll.getPoll_ID());
+			p.executeUpdate();
+			
+			for (TimeOption timeOption : poll.getPollTimeList()) {
+				String insertTimeOption = "INSERT INTO time_options (Poll_ID, Start, End) VALUE (?, ?, ?);";
+				p = c.prepareStatement(insertTimeOption);
+				p.setInt(1, poll.getPoll_ID());
+				p.setDate(2, new java.sql.Date(new Date().getTime()));
+				p.setDate(3, new java.sql.Date(new Date().getTime()));
+				p.executeUpdate();
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		} finally {
+			try {
+				if (p != null)
+					p.close();
+				if (c != null)
+					c.close();
+			} catch (SQLException e2) {
+			}
+		}
 	}
 	
 	public static void readDB(Poll poll) {

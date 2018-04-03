@@ -31,6 +31,17 @@ public class AdminController {
 		}
 		return "Successfully saved poll";
 	}
+	
+	@RequestMapping(value = "/editPoll", method = RequestMethod.POST)
+	public @ResponseBody String editPoll(@RequestBody Poll poll, HttpServletRequest request,
+			HttpServletResponse response) {
+		try {
+			MySQLAccess.updateDB(poll);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "Successfully edited poll";
+	}
 
 	@RequestMapping(value = "/goToPoll")
 	public String goToPoll(ModelMap model) {
