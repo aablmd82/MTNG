@@ -43,11 +43,10 @@ var json = {
 		isRequired : true
 	}, {
 		type : "checkbox",
-		name : "pollTimeList",
+		name : "timeOptions",
 		title : "Select available times:",
 		isRequired : true,
-		colCount : 1,
-		choices : [ "Test" ]
+		colCount : 1
 	} ]
 };
 
@@ -64,6 +63,29 @@ survey.onComplete.add(function(result) {
 			+ JSON.stringify(result.data);
 });
 
+
+function saveVote(survey) {
+	alert('Inside save vote js function');
+	var vote = JSON.stringify(survey.data);
+	alert(vote);
+	// Send the request
+	$.ajax({
+		url : "http://localhost:8080/MTNG/saveVote",
+		type : 'POST',
+		data : vote,
+		// contentType defines json which becomes @RequestBody in controller
+		// Without it, "unsupported media type" error appears
+		contentType : 'application/json',
+		success : function(data) {
+			alert(data);
+		},
+		error : function(data, status, er) {
+			alert("error: " + data + " status: " + status + " er:" + er);
+		}
+	});
+};
+
 $("#surveyElement").Survey({
-	model : survey
+	model : survey,
+	onComplete : saveVote
 });

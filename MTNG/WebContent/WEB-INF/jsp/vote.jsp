@@ -33,6 +33,7 @@
 </head>
 
 <body>
+<h2> I am in vote</h2>
 	<div id="here"></div>
 	<input type="hidden" id="data" value='${data}' />
 	<div id="surveyElement"></div>

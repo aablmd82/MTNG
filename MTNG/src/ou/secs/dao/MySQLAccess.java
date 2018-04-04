@@ -12,6 +12,7 @@ import java.util.Random;
 
 import ou.secs.domain.Poll;
 import ou.secs.domain.TimeOption;
+import ou.secs.domain.Vote;
 
 public class MySQLAccess {
 	public static Connection getConnection() throws Exception {
@@ -49,14 +50,14 @@ public class MySQLAccess {
 			// Inserting data into Person table
 			String insertPersonStmt = "INSERT INTO Person (Person_Name, IsCreator, auth_token) VALUE (?, ?, ?);";
 			p = c.prepareStatement(insertPersonStmt, Statement.RETURN_GENERATED_KEYS);
-			p.setString(1, poll.getEmail());
+			p.setString(1, poll.getPersonName());
 			p.setString(2, "Y");
 			p.setString(3, authToken);
 			int noOfPersonRowsInserted = p.executeUpdate();
 			if (noOfPersonRowsInserted == 0) {
 				System.out.println("Error in insert");
 			} else {
-				// Getting Poll_ID after INSERT into Poll table
+				// Getting Person_ID after INSERT into Person table
 				ResultSet generatedKeys = p.getGeneratedKeys();
 				if (generatedKeys.next()) {
 					personID = generatedKeys.getInt(1);
@@ -117,18 +118,17 @@ public class MySQLAccess {
 			c = getConnection();
 			s = c.createStatement();
 			s.execute("USE mtng;");
-			
+
 			p = c.prepareStatement("DELETE FROM Time_Options WHERE Poll_ID = ?;");
 			p.setInt(1, poll.getPoll_ID());
 			p.executeUpdate();
-			
-			p = c.prepareStatement("UPDATE Poll SET name = ?, location = ?, email = ? WHERE Poll_ID = ?;");
+
+			p = c.prepareStatement("UPDATE Poll SET name = ?, location = ? WHERE Poll_ID = ?;");
 			p.setString(1, poll.getName());
 			p.setString(2, poll.getLocation());
-			p.setString(3, poll.getEmail());
 			p.setInt(4, poll.getPoll_ID());
 			p.executeUpdate();
-			
+
 			for (TimeOption timeOption : poll.getPollTimeList()) {
 				String insertTimeOption = "INSERT INTO time_options (Poll_ID, Start, End) VALUE (?, ?, ?);";
 				p = c.prepareStatement(insertTimeOption);
@@ -149,7 +149,7 @@ public class MySQLAccess {
 			}
 		}
 	}
-	
+
 	public static void readDB(Poll poll) {
 		Connection c = null;
 		Statement s;
@@ -158,8 +158,7 @@ public class MySQLAccess {
 			c = getConnection();
 			s = c.createStatement();
 			s.execute("USE mtng;");
-			p = c.prepareStatement("SELECT Start, End FROM Time_Options WHERE"
-					+ " (Time_ID, Poll_ID) VALUE (?, ?);");
+			p = c.prepareStatement("SELECT Start, End FROM Time_Options WHERE" + " (Time_ID, Poll_ID) VALUE (?, ?);");
 			p.setInt(1, poll.getTime_ID());
 			p.setInt(2, poll.getPoll_ID());
 			p.execute();
@@ -174,5 +173,50 @@ public class MySQLAccess {
 			} catch (SQLException e2) {
 			}
 		}
+	}
+
+	public void saveVoteToDB(Vote vote) {
+		Connection c = null;
+		Statement s;
+		PreparedStatement p = null;
+		int pollID = 0;
+		int personID = 0;
+		try {
+			Random random = new Random();
+			String authToken = String.format("%04d", random.nextInt(100000));
+
+			c = getConnection();
+			s = c.createStatement();
+			s.execute("USE mtng;");
+
+			// Inserting data into Person table
+			String insertPersonStmt = "INSERT INTO Person (Person_Name, IsCreator, auth_token) VALUE (?, ?, ?);";
+			p = c.prepareStatement(insertPersonStmt, Statement.RETURN_GENERATED_KEYS);
+			p.setString(1, vote.getPersonName());
+			p.setString(2, "N");
+			p.setString(3, authToken);
+			int noOfPersonRowsInserted = p.executeUpdate();
+			if (noOfPersonRowsInserted == 0) {
+				System.out.println("Error in vote insert");
+			} else {
+				// Getting Person_ID after INSERT into Person table
+				ResultSet generatedKeys = p.getGeneratedKeys();
+				if (generatedKeys.next()) {
+					personID = generatedKeys.getInt(1);
+				}
+			}
+
+		} catch (Exception e) {
+			System.out.println("Error in saving" + e.getMessage());
+		} finally {
+			try {
+				if (p != null)
+					p.close();
+				if (c != null)
+					c.close();
+			} catch (SQLException e2) {
+			}
+		}
+
 	}
 }

@@ -36,7 +36,7 @@
 </head>
 
 <body>
-	<input type="hidden" id="data" value='${data}'/>
+	<input type="hidden" id="data" value='${data}' />
 	<div id="surveyElement"></div>
 	<div id="surveyResult"></div>
 	<div id="surveyContainer"></div>

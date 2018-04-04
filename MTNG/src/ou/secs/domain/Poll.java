@@ -8,7 +8,7 @@ public class Poll implements Serializable {
 
 	private String name;
 	private String location;
-	private String email;
+	private String personName;
 	private int Poll_ID;
 	private int Time_ID;
 	// private Integer pollID;
@@ -31,12 +31,12 @@ public class Poll implements Serializable {
 		this.location = location;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getPersonName() {
+		return personName;
 	}
-	
-	public void setEmail(String email) {
-		this.email = email;
+
+	public void setPersonName(String personName) {
+		this.personName = personName;
 	}
 
 	public int getPoll_ID() {
@@ -69,21 +69,21 @@ public class Poll implements Serializable {
 	public void setPollTimeList(List<TimeOption> pollTimeList) {
 		this.pollTimeList = pollTimeList;
 	}
-	
+
 	/*
-	* @return a JSON-formatted string of the Poll object
-	* {"name": value,
-	*  "email": value,
-	*  "location": value,
-	*  "times": [{"startdate": value, "starthours": value, "startminutes": value, "enddate": value, "endhours": value, "endminutes": value}]
-	*  }
-    */
+	 * @return a JSON-formatted string of the Poll object {"name": value, "email":
+	 * value, "location": value, "times": [{"startdate": value, "starthours": value,
+	 * "startminutes": value, "enddate": value, "endhours": value, "endminutes":
+	 * value}] }
+	 */
 	public String toString() {
 		String output = "{\"name\": \"" + name + "\",\"location\":\"" + location + "\",\"pollTimeList\":[";
 		for (Iterator<TimeOption> iterator = pollTimeList.iterator(); iterator.hasNext();) {
 			TimeOption option = iterator.next();
-			output += "{\"startdate\":\"" + option.getStartdate() + "\",\"starthours\":\"" + option.getStarthours() + "\",\"startminutes\":\"" + option.getStartminutes() +
-					"\",\"enddate\":\"" + option.getEnddate() + "\",\"endhours\":\"" + option.getEndhours() + "\",\"endminutes\":\"" + option.getEndminutes() + "\"}";
+			output += "{\"startdate\":\"" + option.getStartdate() + "\",\"starthours\":\"" + option.getStarthours()
+					+ "\",\"startminutes\":\"" + option.getStartminutes() + "\",\"enddate\":\"" + option.getEnddate()
+					+ "\",\"endhours\":\"" + option.getEndhours() + "\",\"endminutes\":\"" + option.getEndminutes()
+					+ "\"}";
 			if (iterator.hasNext())
 				output += ",";
 		}
