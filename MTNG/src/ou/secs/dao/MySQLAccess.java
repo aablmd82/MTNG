@@ -1,12 +1,12 @@
 package ou.secs.dao;
 
 import java.sql.Connection;
-import java.util.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -151,6 +151,7 @@ public class MySQLAccess {
 	}
 
 	public static void readDB(Poll poll) {
+
 		Connection c = null;
 		Statement s;
 		PreparedStatement p = null;
@@ -158,10 +159,25 @@ public class MySQLAccess {
 			c = getConnection();
 			s = c.createStatement();
 			s.execute("USE mtng;");
-			p = c.prepareStatement("SELECT Start, End FROM Time_Options WHERE" + " (Time_ID, Poll_ID) VALUE (?, ?);");
-			p.setInt(1, poll.getTime_ID());
-			p.setInt(2, poll.getPoll_ID());
-			p.execute();
+
+			p = c.prepareStatement("DELETE FROM Time_Options WHERE Poll_ID = ?;");
+			p.setInt(1, poll.getPoll_ID());
+			p.executeUpdate();
+
+			p = c.prepareStatement("UPDATE Poll SET name = ?, location = ? WHERE Poll_ID = ?;");
+			p.setString(1, poll.getName());
+			p.setString(2, poll.getLocation());
+			p.setInt(4, poll.getPoll_ID());
+			p.executeUpdate();
+
+			for (TimeOption timeOption : poll.getPollTimeList()) {
+				String insertTimeOption = "INSERT INTO time_options (Poll_ID, Start, End) VALUE (?, ?, ?);";
+				p = c.prepareStatement(insertTimeOption);
+				p.setInt(1, poll.getPoll_ID());
+				p.setDate(2, new java.sql.Date(new Date().getTime()));
+				p.setDate(3, new java.sql.Date(new Date().getTime()));
+				p.executeUpdate();
+			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		} finally {
@@ -176,6 +192,7 @@ public class MySQLAccess {
 	}
 
 	public void saveVoteToDB(Vote vote) {
+
 		Connection c = null;
 		Statement s;
 		PreparedStatement p = null;

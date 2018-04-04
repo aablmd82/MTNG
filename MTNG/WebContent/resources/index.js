@@ -4,7 +4,8 @@ try {
 } catch (SyntaxError) {
 }
 
-/* Checking that the start times are all before the end times */
+
+/*Checking that the start times are all before the end times*/
 function surveyValidateQuestion(s, options) {
 	if (options.name == "pollTimeList") {
 		for (i in options.value) {
@@ -20,7 +21,7 @@ function surveyValidateQuestion(s, options) {
 	}
 }
 
-/* Define the survey */
+/*Define the survey*/
 Survey.Survey.cssType = "bootstrap";
 var surveyJSON = {
 	"pages" : [ {
@@ -47,7 +48,7 @@ var surveyJSON = {
 			type : "matrixdynamic",
 			name : "pollTimeList",
 			title : "Select time options:",
-			minRowCount : 2,
+			minRowCount: 2,
 			validators : [ {
 				type : "mytextvalidator"
 			} ],
@@ -237,13 +238,14 @@ var surveyJSON = {
 	} ]
 }
 
-/* Initialize survey, with previous data loaded if editing the poll */
+/*Initialize survey, with previous data loaded if editing the poll*/
 if (data) {
 	surveyJSON.pages[0].questions[2].visible = false;
 	var survey = new Survey.Model(surveyJSON);
 	survey.data = data;
 	survey.currentPageNo = 1;
-} else
+}
+else
 	var survey = new Survey.Model(surveyJSON);
 survey.showQuestionNumbers = 'off';
 survey.requiredText = '';
@@ -261,7 +263,7 @@ function createPoll(survey) {
 		// Without it, "unsupported media type" error appears
 		contentType : 'application/json',
 		success : function(data) {
-			location.href = 'http://localhost:8080/MTNG/goToPoll';
+			location.href='http://localhost:8080/MTNG/goToPoll';
 		},
 		error : function(data, status, er) {
 			alert("error: " + data + " status: " + status + " er:" + er);

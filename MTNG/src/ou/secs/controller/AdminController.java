@@ -69,6 +69,7 @@ public class AdminController {
 		 * model.addAttribute("data", poll.toString());
 		 */
 		return new ModelAndView("vote", "data", pollFromSession.toString());
+
 	}
 
 	// TODO: Currently hard coded Poll object which needs to be retrieved from the
