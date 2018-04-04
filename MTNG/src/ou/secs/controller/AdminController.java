@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -27,12 +28,13 @@ public class AdminController {
 		MySQLAccess dbAccessDao = new MySQLAccess();
 		try {
 			dbAccessDao.saveToDB(poll);
+			request.getSession(false).setAttribute("SAVED_POLL", poll);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "Successfully saved poll";
 	}
-	
+
 	@RequestMapping(value = "/editPoll", method = RequestMethod.POST)
 	public @ResponseBody String editPoll(@RequestBody Poll poll, HttpServletRequest request,
 			HttpServletResponse response) {
@@ -45,25 +47,29 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/goToPoll")
-	public ModelAndView goToPoll(ModelMap model) {
-		Poll testPoll = new Poll();
-		testPoll.setName("test name");
-		testPoll.setLocation("test location");
+	public ModelAndView goToPoll(HttpServletRequest request, ModelMap model) {
 
-		List<TimeOption> pollTimeList = new ArrayList<TimeOption>();
+		HttpSession session = request.getSession(false);
 
-		TimeOption testTimeOption1 = new TimeOption();
-		testTimeOption1.setEnddate("02-03-2018");
-		testTimeOption1.setEndhours("18");
-		testTimeOption1.setEndminutes("30");
-		testTimeOption1.setStartdate("02-03-2018");
-		testTimeOption1.setStarthours("2");
-		testTimeOption1.setStartminutes("0");
+		Poll pollFromSession = (Poll) session.getAttribute("SAVED_POLL");
 
-		pollTimeList.add(testTimeOption1);
-		testPoll.setPollTimeList(pollTimeList);
+		/*
+		 * Poll testPoll = new Poll(); testPoll.setName("test name");
+		 * testPoll.setLocation("test location");
+		 * 
+		 * List<TimeOption> pollTimeList = new ArrayList<TimeOption>();
+		 * 
+		 * TimeOption testTimeOption1 = new TimeOption();
+		 * testTimeOption1.setEnddate("02-03-2018"); testTimeOption1.setEndhours("18");
+		 * testTimeOption1.setEndminutes("30");
+		 * testTimeOption1.setStartdate("02-03-2018");
+		 * testTimeOption1.setStarthours("2"); testTimeOption1.setStartminutes("0");
+		 * 
+		 * pollTimeList.add(testTimeOption1); testPoll.setPollTimeList(pollTimeList);
+		 * model.addAttribute("data", poll.toString());
+		 */
+		return new ModelAndView("vote", "data", pollFromSession.toString());
 
-		return new ModelAndView("vote", "data", testPoll.toString());
 	}
 
 	// TODO: Currently hard coded Poll object which needs to be retrieved from the
@@ -86,7 +92,7 @@ public class AdminController {
 		testTimeOption1.setStarthours("2");
 		testTimeOption1.setStartminutes("0");
 		pollTimeList.add(testTimeOption1);
-		
+
 		TimeOption testTimeOption2 = new TimeOption();
 		testTimeOption2.setEnddate("2018-02-03");
 		testTimeOption2.setEndhours("5");
@@ -108,7 +114,7 @@ public class AdminController {
 		}
 		return new ModelAndView("welcome", "data", testPoll.toString());
 	}
-	
+
 	@RequestMapping(value = "/editPoll")
 	public ModelAndView editPoll(ModelMap model) {
 		Poll testPoll = new Poll();
@@ -125,7 +131,7 @@ public class AdminController {
 		testTimeOption1.setStarthours("2");
 		testTimeOption1.setStartminutes("0");
 		pollTimeList.add(testTimeOption1);
-		
+
 		TimeOption testTimeOption2 = new TimeOption();
 		testTimeOption2.setEnddate("2018-02-03");
 		testTimeOption2.setEndhours("5");

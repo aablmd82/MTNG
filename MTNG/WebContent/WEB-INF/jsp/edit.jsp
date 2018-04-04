@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>MTNG VotePage</title>
+<title>MTNG EditPollPage</title>
 
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
@@ -35,11 +35,10 @@
 
 <body>
 	<div id="here"></div>
-	<input type="hidden" id="data" value='${data}'/>
+	<input type="hidden" id="data" value='${data}' />
 	<div id="surveyElement"></div>
 	<div id="surveyResult"></div>
 	<div id="surveyContainer"></div>
 	<script src="./resources/js/index.js"></script>
 </body>
 </html>
-

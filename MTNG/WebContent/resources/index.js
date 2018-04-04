@@ -1,8 +1,9 @@
 /*Read poll data if editing a poll*/
 try {
 	var data = JSON.parse($('#data').val());
+} catch (SyntaxError) {
 }
-catch(SyntaxError) {}
+
 
 /*Checking that the start times are all before the end times*/
 function surveyValidateQuestion(s, options) {
@@ -269,8 +270,6 @@ function createPoll(survey) {
 		}
 	});
 };
-
-
 
 $("#surveyContainer").Survey({
 	model : survey,
