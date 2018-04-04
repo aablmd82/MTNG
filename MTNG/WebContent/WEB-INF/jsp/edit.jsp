@@ -39,7 +39,7 @@
 	<div id="surveyElement"></div>
 	<div id="surveyResult"></div>
 	<div id="surveyContainer"></div>
-	<script src="./resources/index.js"></script>
+	<script src="./resources/js/index.js"></script>
 </body>
 </html>
 

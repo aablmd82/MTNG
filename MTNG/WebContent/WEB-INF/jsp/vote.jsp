@@ -36,7 +36,7 @@
 	<div id="surveyContainer"></div>
 	<input type="button" onclick="location.href='http://localhost:8080/MTNG/editPoll'" value="Edit Poll" />
 	
-	<script src="./resources/poll.js"></script>
+	<script src="./resources/js/poll.js"></script>
 </body>
 </html>
 

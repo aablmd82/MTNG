@@ -8,6 +8,7 @@ public class TimeOption {
     private String enddate;
     private String endhours;
     private String endminutes;
+    private int Time_ID;
 
     public String getStartdate() {
         return startdate;
@@ -57,5 +58,11 @@ public class TimeOption {
         return endminutes;
     }
 
-
+    public void setTime_ID(int id) {
+    	this.Time_ID = id;
+    }
+    
+    public int getTime_ID() {
+    	return this.Time_ID;
+    }
 }
