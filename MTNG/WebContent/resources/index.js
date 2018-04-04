@@ -6,7 +6,7 @@ try {
 
 /* Checking that the start times are all before the end times */
 function surveyValidateQuestion(s, options) {
-	if (options.name == "times") {
+	if (options.name == "pollTimeList") {
 		for (i in options.value) {
 			var tV = options.value[i];
 			var startdate = new Date(tV.startdate + ' ' + tV.starthours + ':'
@@ -37,12 +37,9 @@ var surveyJSON = {
 			isRequired : true
 		}, {
 			type : "text",
-			name : "email",
-			title : "Please type your e-mail",
+			name : "personName",
+			title : "Please enter your name",
 			isRequired : true,
-			validators : [ {
-				type : "email"
-			} ]
 		} ]
 	}, {
 		"name" : "page2",
@@ -50,6 +47,7 @@ var surveyJSON = {
 			type : "matrixdynamic",
 			name : "pollTimeList",
 			title : "Select time options:",
+			minRowCount : 2,
 			validators : [ {
 				type : "mytextvalidator"
 			} ],
@@ -234,15 +232,14 @@ var surveyJSON = {
 				"cellType" : "dropdown",
 				"isRequired" : true,
 				"choices" : [ "0", "15", "30", "45" ]
-			} ]
+			}, ]
 		} ]
 	} ]
 }
 
 /* Initialize survey, with previous data loaded if editing the poll */
 if (data) {
-	surveyJSON.pages[0].questions[0].visible = false;
-	surveyJSON.pages[0].questions[1].visible = false;
+	surveyJSON.pages[0].questions[2].visible = false;
 	var survey = new Survey.Model(surveyJSON);
 	survey.data = data;
 	survey.currentPageNo = 1;
@@ -264,7 +261,7 @@ function createPoll(survey) {
 		// Without it, "unsupported media type" error appears
 		contentType : 'application/json',
 		success : function(data) {
-			alert(data);
+			location.href = 'http://localhost:8080/MTNG/goToPoll';
 		},
 		error : function(data, status, er) {
 			alert("error: " + data + " status: " + status + " er:" + er);

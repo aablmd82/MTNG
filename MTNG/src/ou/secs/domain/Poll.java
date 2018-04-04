@@ -1,6 +1,7 @@
 package ou.secs.domain;
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.List;
 
 public class Poll implements Serializable {
@@ -67,6 +68,27 @@ public class Poll implements Serializable {
 
 	public void setPollTimeList(List<TimeOption> pollTimeList) {
 		this.pollTimeList = pollTimeList;
+	}
+	
+	/*
+	* @return a JSON-formatted string of the Poll object
+	* {"name": value,
+	*  "email": value,
+	*  "location": value,
+	*  "times": [{"startdate": value, "starthours": value, "startminutes": value, "enddate": value, "endhours": value, "endminutes": value}]
+	*  }
+    */
+	public String toString() {
+		String output = "{\"name\": \"" + name + "\",\"location\":\"" + location + "\",\"pollTimeList\":[";
+		for (Iterator<TimeOption> iterator = pollTimeList.iterator(); iterator.hasNext();) {
+			TimeOption option = iterator.next();
+			output += "{\"startdate\":\"" + option.getStartdate() + "\",\"starthours\":\"" + option.getStarthours() + "\",\"startminutes\":\"" + option.getStartminutes() +
+					"\",\"enddate\":\"" + option.getEnddate() + "\",\"endhours\":\"" + option.getEndhours() + "\",\"endminutes\":\"" + option.getEndminutes() + "\"}";
+			if (iterator.hasNext())
+				output += ",";
+		}
+		output += "]}";
+		return output;
 	}
 
 }

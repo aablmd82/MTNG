@@ -2,13 +2,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>MTNG Homepage</title>
-<!-- let's add tag srping:url -->
-<spring:url value="/resources/index.js" var="indexJS" />
+<title>MTNG VotePage</title>
 
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-
 <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 
 <!-- Finish adding tags -->
@@ -16,7 +13,7 @@
 
 <script src="https://unpkg.com/jquery"></script>
 
-<script src="https://unpkg.com/survey-jquery"></script>
+<script src="./resources/js/survey.jquery.js"></script>
 
 <link rel="stylesheet"
 	href="https://getbootstrap.com/dist/css/bootstrap.css">
@@ -36,10 +33,15 @@
 </head>
 
 <body>
-	<input type="hidden" id="data" value='${data}'/>
+	<div id="here"></div>
+	<input type="hidden" id="data" value='${data}' />
 	<div id="surveyElement"></div>
 	<div id="surveyResult"></div>
 	<div id="surveyContainer"></div>
-	<script src="${indexJS}"></script>
+	<input type="button"
+		onclick="location.href='http://localhost:8080/MTNG/editPoll'"
+		value="Edit Poll" />
+
+	<script src="./resources/poll.js"></script>
 </body>
 </html>
