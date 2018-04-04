@@ -22459,7 +22459,7 @@ var QuestionMatrixDynamicModel = /** @class */ (function (_super) {
         var _this = _super.call(this, name) || this;
         _this.name = name;
         _this.rowCounter = 0;
-        _this.rowCountValue = 1;
+        _this.rowCountValue = 4;
         _this.createLocalizableString("confirmDeleteText", _this);
         _this.createLocalizableString("keyDuplicationError", _this);
         _this.createLocalizableString("addRowText", _this);

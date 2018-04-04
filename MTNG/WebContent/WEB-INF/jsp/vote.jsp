@@ -33,7 +33,6 @@
 </head>
 
 <body>
-<h2> I am in vote</h2>
 	<div id="here"></div>
 	<input type="hidden" id="data" value='${data}' />
 	<div id="surveyElement"></div>
@@ -42,7 +41,7 @@
 	<input type="button"
 		onclick="location.href='http://localhost:8080/MTNG/getPollToEdit'"
 		value="Edit Poll" />
-
 	<script src="./resources/poll.js"></script>
 </body>
 </html>
+

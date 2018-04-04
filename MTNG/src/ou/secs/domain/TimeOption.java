@@ -65,5 +65,4 @@ public class TimeOption {
 	public int getTime_ID() {
 		return this.Time_ID;
 	}
-
 }
