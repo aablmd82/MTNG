@@ -33,7 +33,7 @@ public class MySQLAccess {
 		return connection;
 	}
 
-	public static void saveToDB(Poll poll) {
+	public static Poll saveToDB(Poll poll) {
 		Connection c = null;
 		Statement s;
 		PreparedStatement p = null;
@@ -78,6 +78,7 @@ public class MySQLAccess {
 				ResultSet generatedKeys = p.getGeneratedKeys();
 				if (generatedKeys.next()) {
 					pollID = generatedKeys.getInt(1);
+					poll.setPoll_ID(pollID);
 				}
 			}
 
@@ -85,12 +86,33 @@ public class MySQLAccess {
 			List<TimeOption> timeOptions = poll.getPollTimeList();
 			if (timeOptions != null && timeOptions.size() > 0) {
 				for (TimeOption timeOption : timeOptions) {
+					int timeID = 0;
 					String insertTimeOption = "INSERT INTO time_options (Poll_ID, Start, End) VALUE (?, ?, ?);";
-					p = c.prepareStatement(insertTimeOption);
+					p = c.prepareStatement(insertTimeOption, Statement.RETURN_GENERATED_KEYS);
 					p.setInt(1, pollID);
-					p.setDate(2, new java.sql.Date(new Date().getTime()));
-					p.setDate(3, new java.sql.Date(new Date().getTime()));
-					p.executeUpdate();
+
+					String startDateOption = timeOption.getStartdate() + " " + timeOption.getStarthours() + ":"
+							+ timeOption.getStartminutes() + ":" + "00";
+					System.out.println("startDate : " + startDateOption);
+
+					String endDateOption = timeOption.getEnddate() + " " + timeOption.getEndhours() + ":"
+							+ timeOption.getEndminutes() + ":" + "00";
+					System.out.println("endDate : " + endDateOption);
+
+					p.setString(2, startDateOption);
+					p.setString(3, endDateOption);
+					int noOfTimeOptionRowsInserted = p.executeUpdate();
+					if (noOfTimeOptionRowsInserted == 0) {
+						System.out.println("Error in insert into time_options");
+					} else {
+						// Getting Time_ID after INSERT into time_options table
+						ResultSet generatedKeys = p.getGeneratedKeys();
+						if (generatedKeys.next()) {
+							timeID = generatedKeys.getInt(1);
+							timeOption.setTime_ID(timeID);
+						}
+					}
+
 				}
 			}
 		} catch (Exception e) {
@@ -104,6 +126,7 @@ public class MySQLAccess {
 			} catch (SQLException e2) {
 			}
 		}
+		return poll;
 
 	}
 
@@ -220,6 +243,18 @@ public class MySQLAccess {
 				ResultSet generatedKeys = p.getGeneratedKeys();
 				if (generatedKeys.next()) {
 					personID = generatedKeys.getInt(1);
+				}
+				List<String> timeOptions = vote.getTimeOptions();
+				if (timeOptions != null && timeOptions.size() > 0) {
+					// Saving personID and timeID to vote table
+					for (String timeOption : timeOptions) {
+						int timeID = 0;
+						String insertTimeOption = "INSERT INTO vote (Person_ID, Time_ID) VALUE (?, ?);";
+						p = c.prepareStatement(insertTimeOption);
+						p.setInt(1, personID);
+						p.setInt(2, Integer.parseInt(timeOption));
+						p.executeUpdate();
+					}
 				}
 			}
 

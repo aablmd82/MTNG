@@ -83,12 +83,12 @@ public class Poll implements Serializable {
 			output += "{\"startdate\":\"" + option.getStartdate() + "\",\"starthours\":\"" + option.getStarthours()
 					+ "\",\"startminutes\":\"" + option.getStartminutes() + "\",\"enddate\":\"" + option.getEnddate()
 					+ "\",\"endhours\":\"" + option.getEndhours() + "\",\"endminutes\":\"" + option.getEndminutes()
-					+ "\"}";
+					+ "\", \"Time_ID\": " + option.getTime_ID() + "}";
+
 			if (iterator.hasNext())
 				output += ",";
 		}
 		output += "]}";
 		return output;
 	}
-
 }
