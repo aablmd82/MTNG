@@ -87,7 +87,7 @@ public class MySQLAccess {
 			if (timeOptions != null && timeOptions.size() > 0) {
 				for (TimeOption timeOption : timeOptions) {
 					int timeID = 0;
-					String insertTimeOption = "INSERT INTO time_options (Poll_ID, Start, End) VALUE (?, ?, ?);";
+					String insertTimeOption = "INSERT INTO Time_Options (Poll_ID, Start, End) VALUE (?, ?, ?);";
 					p = c.prepareStatement(insertTimeOption, Statement.RETURN_GENERATED_KEYS);
 					p.setInt(1, pollID);
 
@@ -103,7 +103,7 @@ public class MySQLAccess {
 					p.setString(3, endDateOption);
 					int noOfTimeOptionRowsInserted = p.executeUpdate();
 					if (noOfTimeOptionRowsInserted == 0) {
-						System.out.println("Error in insert into time_options");
+						System.out.println("Error in insert into Time_Options");
 					} else {
 						// Getting Time_ID after INSERT into time_options table
 						ResultSet generatedKeys = p.getGeneratedKeys();
@@ -153,7 +153,7 @@ public class MySQLAccess {
 			p.executeUpdate();
 
 			for (TimeOption timeOption : poll.getPollTimeList()) {
-				String insertTimeOption = "INSERT INTO time_options (Poll_ID, Start, End) VALUE (?, ?, ?);";
+				String insertTimeOption = "INSERT INTO Time_Options (Poll_ID, Start, End) VALUE (?, ?, ?);";
 				p = c.prepareStatement(insertTimeOption);
 				p.setInt(1, poll.getPoll_ID());
 				p.setDate(2, new java.sql.Date(new Date().getTime()));
@@ -194,7 +194,7 @@ public class MySQLAccess {
 			p.executeUpdate();
 
 			for (TimeOption timeOption : poll.getPollTimeList()) {
-				String insertTimeOption = "INSERT INTO time_options (Poll_ID, Start, End) VALUE (?, ?, ?);";
+				String insertTimeOption = "INSERT INTO Time_Options (Poll_ID, Start, End) VALUE (?, ?, ?);";
 				p = c.prepareStatement(insertTimeOption);
 				p.setInt(1, poll.getPoll_ID());
 				p.setDate(2, new java.sql.Date(new Date().getTime()));
