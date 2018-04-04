@@ -74,7 +74,7 @@ public class Poll implements Serializable {
 	 * @return a JSON-formatted string of the Poll object {"name": value, "email":
 	 * value, "location": value, "times": [{"startdate": value, "starthours": value,
 	 * "startminutes": value, "enddate": value, "endhours": value, "endminutes":
-	 * value}] }
+	 * value, "Time_ID": value}] }
 	 */
 	public String toString() {
 		String output = "{\"name\": \"" + name + "\",\"location\":\"" + location + "\",\"pollTimeList\":[";
@@ -83,7 +83,8 @@ public class Poll implements Serializable {
 			output += "{\"startdate\":\"" + option.getStartdate() + "\",\"starthours\":\"" + option.getStarthours()
 					+ "\",\"startminutes\":\"" + option.getStartminutes() + "\",\"enddate\":\"" + option.getEnddate()
 					+ "\",\"endhours\":\"" + option.getEndhours() + "\",\"endminutes\":\"" + option.getEndminutes()
-					+ "\"}";
+				+ "\", \"Time_ID\": " + option.getTime_ID() + "}";
+			
 			if (iterator.hasNext())
 				output += ",";
 		}
