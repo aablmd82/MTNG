@@ -1,0 +1,26 @@
+package formula;
+
+import static java.lang.Math.round;
+
+/**
+ *
+ * @author Ari
+ */
+public class Formula {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        // TODO code application logic here
+        
+            
+    }
+    public int getTotalVote(){
+        double pollcount = 0;
+        double totalvote = 0;
+       int vote;
+        vote = (int) (round(pollcount*totalvote)/100);
+        return vote;
+    }
+}
