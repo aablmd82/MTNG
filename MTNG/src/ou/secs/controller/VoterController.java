@@ -25,7 +25,7 @@ public class VoterController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "Successfully saved vote";
+		return "Voter ID: " + vote.getPerson_ID() + "<br><br>Use this ID to view the results of the poll at any time";
 	}
 
 	@RequestMapping(value = "/editVote")

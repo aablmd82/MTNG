@@ -77,7 +77,7 @@ public class Poll implements Serializable {
 	 * value, "Time_ID": value}] }
 	 */
 	public String toString() {
-		String output = "{\"name\": \"" + name + "\",\"location\":\"" + location + "\",\"pollTimeList\":[";
+		String output = "{\"pollID\": \"" + Poll_ID + "\",\"name\": \"" + name + "\",\"location\":\"" + location + "\",\"personName\":\"" + personName + "\",\"pollTimeList\":[";
 		for (Iterator<TimeOption> iterator = pollTimeList.iterator(); iterator.hasNext();) {
 			TimeOption option = iterator.next();
 			output += "{\"startdate\":\"" + option.getStartdate() + "\",\"starthours\":\"" + option.getStarthours()

@@ -250,9 +250,7 @@ survey.showQuestionNumbers = 'off';
 survey.requiredText = '';
 
 function createPoll(survey) {
-	alert('Inside createPoll js function');
 	var poll = JSON.stringify(survey.data);
-	alert(poll);
 	// Send the request
 	$.ajax({
 		url : "http://localhost:8080/MTNG/createPoll",
@@ -262,7 +260,26 @@ function createPoll(survey) {
 		// Without it, "unsupported media type" error appears
 		contentType : 'application/json',
 		success : function(data) {
-			location.href='http://localhost:8080/MTNG/goToPoll';
+			document.querySelector("#surveyContainer").innerHTML += (data);
+		},
+		error : function(data, status, er) {
+			alert("error: " + data + " status: " + status + " er:" + er);
+		}
+	});
+};
+
+function editPoll(survey) {
+	var poll = JSON.stringify(survey.data);
+	// Send the request
+	$.ajax({
+		url : "http://localhost:8080/MTNG/editPoll",
+		type : 'POST',
+		data : poll,
+		// contentType defines json which becomes @RequestBody in controller
+		// Without it, "unsupported media type" error appears
+		contentType : 'application/json',
+		success : function(data) {
+			document.querySelector("#surveyContainer").innerHTML += (data);
 		},
 		error : function(data, status, er) {
 			alert("error: " + data + " status: " + status + " er:" + er);
@@ -275,5 +292,5 @@ function createPoll(survey) {
 $("#surveyContainer").Survey({
 	model : survey,
 	onValidateQuestion : surveyValidateQuestion,
-	onComplete : createPoll
+	onComplete : (data) ? editPoll: createPoll
 });

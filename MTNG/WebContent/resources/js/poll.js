@@ -1,6 +1,13 @@
 /*Load data*/
-var data = JSON.parse($('#data').val());
-document.querySelector('#here').innerHTML += "Event name: " + data.name + "<br>Location: " + data.location + "<br>";
+var dataString = $('#data').val();
+try{
+	var data = JSON.parse($('#data').val());
+} catch(SyntaxError){
+	var data = {"name":"hello","location":"hello","pollTimeList":[{"startdate":"2018-12-31","starthours":"0","startminutes":"0","enddate":"2018-12-31","endhours":"16","endminutes":"15","Time_ID":0},{"startdate":"2018-04-01","starthours":"0","startminutes":"0","enddate":"2018-12-01","endhours":"2","endminutes":"0","Time_ID":0}]};
+}
+document.getElementById("eventName").innerHTML = data.name;
+document.getElementById("locationName").innerHTML = data.location;
+document.getElementById("personName").innerHTML = data.personName;
 
 /*Load the available options*/
 var choices1 = [];
@@ -48,12 +55,66 @@ window.survey = new Survey.Model(json);
 survey.showQuestionNumbers = 'off';
 survey.requiredText = '';
 
-survey
-    .onComplete
-    .add(function (result) {
-        document
-            .querySelector('#surveyResult')
-            .innerHTML = "result: " + JSON.stringify(result.data);
-    });
+function saveVote(survey) {
+	alert('Inside saveVote js function');
+	var voteData = JSON.stringify(survey.data);
+	alert(voteData);
+	// Send the request
+	$.ajax({
+		url : "http://localhost:8080/MTNG/saveVote",
+		type : 'POST',
+		data : voteData,
+		// contentType defines json which becomes @RequestBody in controller
+		// Without it, "unsupported media type" error appears
+		success : function(data) {
+		},
+		error : function(data, status, er) {
+			"Voter ID: 1<br><br>Use this ID to view the results of the poll at any time";
+		}
+	});
+};
 
-$("#surveyElement").Survey({model: survey});
+function showChart(chartDataSource) {
+    document
+        .getElementById("chartContainer")
+        .style
+        .height = "500px";
+    $("#chartContainer").dxChart({
+        dataSource: chartDataSource,
+        argumentAxis: {
+        	label: {
+        		customizeText: function() {
+        			return this.value.replace(/-/g, '-<br>')
+        		}
+        	}
+        },
+        commonSeriesSettings: {
+            hoverMode: "allArgumentPoints",
+            selectionMode: "allArgumentPoints",
+            label: {
+                visible: true,
+                backgroundColor: "#000000"
+            }
+        },
+        rotated: true,
+        series: {
+            argumentField: 'name',
+            valueField: 'value',
+            type: "bar",
+            color: '#fff222'
+        }
+    });
+}
+
+var chartDataSource = [{name: "Thu Jun 5 5:30AM - Thu Jun 6:00PM", value: "5"},
+	{name:"Thu Jun 5 5:30AM - Thu Jun 8:00PM", value: "60"},
+	{name:"Thu Jun 6 5:30AM - Thu Jun 8:00PM", value: "30"}];
+chartDataSource.sort(function(a,b){return a.value - b.value});
+
+survey
+.onComplete
+.add(function (result) {
+	showChart(chartDataSource);
+});
+
+$("#surveyElement").Survey({model: survey, onComplete: saveVote});

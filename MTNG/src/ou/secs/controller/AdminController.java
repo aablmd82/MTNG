@@ -36,7 +36,8 @@ public class AdminController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "Successfully saved poll with pollID" + savedPoll.getPoll_ID();
+		return "Successfully saved poll with pollID: " + savedPoll.getPoll_ID() +
+				"<br><br>Send this link to others to vote on: mtng.me/goToPoll/?pollID=" + savedPoll.getPoll_ID();
 	}
 
 	// Update changes made to the poll in the DB
@@ -54,11 +55,12 @@ public class AdminController {
 	// Goes to voter page once poll is created and saved
 	@RequestMapping(value = "/goToPoll")
 	public ModelAndView goToPoll(HttpServletRequest request, ModelMap model) {
-
+		
 		HttpSession session = request.getSession(false);
 
 		Poll pollFromSession = (Poll) session.getAttribute("SAVED_POLL");
-
+		System.out.print(request.getParameter("pollID"));
+		model.addAttribute("pollID", request.getParameter("pollID"));
 		return new ModelAndView("vote", "data", pollFromSession.toString());
 
 	}
@@ -70,7 +72,7 @@ public class AdminController {
 
 		Poll pollFromSession = (Poll) session.getAttribute("SAVED_POLL");
 
-		return new ModelAndView("edit", "data", pollFromSession.toString());
+		return new ModelAndView("index", "data", pollFromSession.toString());
 	}
 
 }
