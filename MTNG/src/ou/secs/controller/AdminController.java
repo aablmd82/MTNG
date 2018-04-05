@@ -1,12 +1,11 @@
 package ou.secs.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,10 +16,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import ou.secs.dao.MySQLAccess;
 import ou.secs.domain.Poll;
-import ou.secs.domain.TimeOption;
 
 @Controller
 public class AdminController {
+	
+	@RequestMapping(value = "/isCreator", method = RequestMethod.GET)
+	public ResponseEntity<Boolean> getPoll(@RequestBody int personId) {
+		return new ResponseEntity<>(MySQLAccess.isCreator(personId), HttpStatus.OK);
+	}
 
 	@RequestMapping(value = "/createPoll", method = RequestMethod.POST)
 	public @ResponseBody String createPoll(@RequestBody Poll poll, HttpServletRequest request,

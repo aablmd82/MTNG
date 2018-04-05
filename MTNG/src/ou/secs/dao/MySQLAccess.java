@@ -32,6 +32,32 @@ public class MySQLAccess {
 		}
 		return connection;
 	}
+	
+	public static boolean isCreator(int personId) {
+		Connection c = null;
+		PreparedStatement p = null;
+		ResultSet r = null;
+		try {
+			c = getConnection();
+			p = c.prepareStatement("SELECT COUNT(*) FROM Person WHERE Person_ID = ? && IsCreator = 'Y';");
+			p.setInt(1, personId);
+			ResultSet resultSet = p.executeQuery();
+			resultSet.next();
+			return resultSet.getInt(1) > 0;
+		} catch (Exception e) {
+			System.out.println("Error in saving: " + e.getMessage());
+		} finally {
+			try {
+				if (r != null)
+					r.close();
+				if (p != null)
+					p.close();
+				if (c != null)
+					c.close();
+			} catch (SQLException e2) {}
+		}
+		return false;
+	}
 
 	public static Poll saveToDB(Poll poll) {
 		Connection c = null;
