@@ -7,12 +7,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import ou.secs.domain.Poll;
+import ou.secs.domain.PollResults;
 import ou.secs.domain.TimeOption;
 import ou.secs.domain.Vote;
+import ou.secs.util.TimeUtil;
 
 public class MySQLAccess {
 	public static Connection getConnection() throws Exception {
@@ -31,6 +35,42 @@ public class MySQLAccess {
 			System.out.println(connection);
 		}
 		return connection;
+	}
+	
+	public static PollResults getTotalVotes(int pollId) {
+		Map<TimeOption, Integer> tally = new HashMap<>();
+		Connection c = null;
+		PreparedStatement p = null;
+		ResultSet r = null;
+		try {
+			c = getConnection();
+			p = c.prepareStatement("SELECT Time_ID, Start, End, COUNT(Person_ID) FROM Time_Options JOIN Vote USING(Time_ID) WHERE Poll_ID = ? GROUP BY Time_ID;");
+			p.setInt(1, pollId);
+			ResultSet resultSet = p.executeQuery();
+			while (resultSet.next()) {
+				TimeOption to = TimeUtil.timeOptionFromSql(resultSet.getTimestamp(2), resultSet.getTimestamp(3));
+				to.setTime_ID(resultSet.getInt(1));
+				tally.put(to, resultSet.getInt(4));
+			}
+			PollResults results = new PollResults();
+			results.setTally(tally);
+			return results;
+		} catch (Exception e) {
+			System.out.println("Error in saving: " + e.getMessage());
+		} finally {
+			try {
+				if (r != null)
+					r.close();
+				if (p != null)
+					p.close();
+				if (c != null)
+					c.close();
+			} catch (SQLException e2) {}
+		}
+		//return empty result upon failure
+		PollResults results = new PollResults();
+		results.setTally(tally);
+		return results;
 	}
 	
 	public static boolean isCreator(int personId) {
@@ -117,12 +157,10 @@ public class MySQLAccess {
 					p = c.prepareStatement(insertTimeOption, Statement.RETURN_GENERATED_KEYS);
 					p.setInt(1, pollID);
 
-					String startDateOption = timeOption.getStartdate() + " " + timeOption.getStarthours() + ":"
-							+ timeOption.getStartminutes() + ":" + "00";
+					String startDateOption = TimeUtil.sqlStartTimeFromTimeOption(timeOption);
 					System.out.println("startDate : " + startDateOption);
 
-					String endDateOption = timeOption.getEnddate() + " " + timeOption.getEndhours() + ":"
-							+ timeOption.getEndminutes() + ":" + "00";
+					String endDateOption = TimeUtil.sqlEndTimeFromTimeOption(timeOption);
 					System.out.println("endDate : " + endDateOption);
 
 					p.setString(2, startDateOption);
