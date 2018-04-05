@@ -59,8 +59,6 @@ public class AdminController {
 		HttpSession session = request.getSession(false);
 
 		Poll pollFromSession = (Poll) session.getAttribute("SAVED_POLL");
-		System.out.print(request.getParameter("pollID"));
-		model.addAttribute("pollID", request.getParameter("pollID"));
 		return new ModelAndView("vote", "data", pollFromSession.toString());
 
 	}
