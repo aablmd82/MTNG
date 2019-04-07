@@ -10,4 +10,4 @@ Web application made for Software Engineering and Practice (Winter 2018). The ap
     - Both of these files use SurveyJS (Licensed under MIT) to display all the polls and results. I had to familiarize myself on how to create and edit polls, send and retreive data to a poll, and displaying the results of a poll.
 - <b>MTNG/src/ou/secs/controller/</b>: Helped write the code here to process the information sent/received from the web application
 
-https://docs.google.com/presentation/d/e/2PACX-1vRhzt6iebhC3VOPddRodpL9iC8cUCG_zUFOJU9Aeegqcw6An-VNdl6UH4PFpriBkBPk3Qptomcwmfa8/pub?start=false&loop=false&delayms=5000
+<a href="https://docs.google.com/presentation/d/e/2PACX-1vRhzt6iebhC3VOPddRodpL9iC8cUCG_zUFOJU9Aeegqcw6An-VNdl6UH4PFpriBkBPk3Qptomcwmfa8/pub?start=false&loop=false&delayms=5000">Link to our final presentation</a>
